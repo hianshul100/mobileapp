@@ -22,7 +22,7 @@ class SettingsMenuScreen extends StatelessWidget {
             ),
             child: const ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.person, color: skillGreen),
+              leading: Icon(Icons.person, color: skillViolet),
               title: Text('Profile'),
               trailing: Icon(Icons.chevron_right),
             ),
@@ -34,7 +34,7 @@ class SettingsMenuScreen extends StatelessWidget {
             ),
             child: const ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.settings, color: skillGreen),
+              leading: Icon(Icons.settings, color: skillCoral),
               title: Text('Settings'),
               trailing: Icon(Icons.chevron_right),
             ),
@@ -46,7 +46,7 @@ class SettingsMenuScreen extends StatelessWidget {
             ),
             child: const ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.notifications, color: skillGreen),
+              leading: Icon(Icons.notifications, color: skillSky),
               title: Text('Notifications'),
               trailing: Icon(Icons.chevron_right),
             ),

@@ -44,7 +44,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               if (_message != null) ...[
                 const SizedBox(height: 20),
-                Text(_message!, style: const TextStyle(color: skillGreen)),
+                Text(_message!, style: const TextStyle(color: skillViolet)),
               ],
             ],
           ),

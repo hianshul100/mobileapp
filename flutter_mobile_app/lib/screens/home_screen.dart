@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          color: skillGreen,
+          color: skillViolet,
           onPressed: () {
             Navigator.push(
               context,
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.api),
-            color: skillGreen,
+          color: skillCoral,
             onPressed: () {
               Navigator.push(
                 context,
@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.person),
-            color: skillGreen,
+            color: skillViolet,
             onPressed: () {
               Navigator.push(
                 context,
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             tooltip: 'Logout',
             icon: const Icon(Icons.logout),
-            color: skillGreen,
+            color: skillCoral,
             onPressed: () => _logout(context),
           ),
         ],
@@ -127,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.chevron_right, color: skillGreen),
+                  const Icon(Icons.chevron_right, color: skillCoral),
                 ],
               ),
             ),

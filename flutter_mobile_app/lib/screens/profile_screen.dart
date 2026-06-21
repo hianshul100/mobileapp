@@ -65,11 +65,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           Text('Favorites', style: Theme.of(context).textTheme.titleLarge),
+          if (_favorites.isEmpty)
+            const SkillCard(
+              child: Text('No favorites yet. Save a lesson from the detail screen.'),
+            ),
           ..._favorites.map(
             (lesson) => SkillCard(
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.star, color: skillGreen),
+                leading: const Icon(Icons.star, color: skillCoral),
                 title: Text(lesson.title),
                 subtitle: const Text('Persisted locally'),
               ),

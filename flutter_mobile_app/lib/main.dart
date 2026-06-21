@@ -42,6 +42,39 @@ class SkillForgeApp extends StatelessWidget {
             ),
         useMaterial3: true,
       ),
+      builder: (context, child) {
+        return Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFFFF0A8), Color(0xFFFFB2C8), Color(0xFFB6F2FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Center(
+            child: Container(
+              width: 390,
+              height: 800,
+              decoration: BoxDecoration(
+                color: skillSurface,
+                borderRadius: BorderRadius.circular(34),
+                border: Border.all(color: skillInk, width: 12),
+                boxShadow: [
+                  BoxShadow(
+                    color: skillViolet.withOpacity(0.25),
+                    blurRadius: 45,
+                    offset: const Offset(0, 18),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: child ?? const SizedBox.shrink(),
+              ),
+            ),
+          ),
+        );
+      },
       home: const LoginScreen(),
     );
   }

@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() => _dailyReminder = value);
                 _saveSettings();
               },
-              activeColor: skillGreen,
+              activeColor: skillCoral,
             ),
           ),
           SkillCard(
@@ -51,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() => _pushAlerts = value);
                 _saveSettings();
               },
-              activeColor: skillGreen,
+              activeColor: skillViolet,
             ),
           ),
         ],
