@@ -19,23 +19,32 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
-  final _ageController = TextEditingController();
-  final Set<String> _selectedHabits = <String>{};
-  final Map<String, int> _habitColors = <String, int>{};
-  final Random _random = Random();
-
-  List<String> _countries = const [];
-  String? _selectedCountry;
-
-  final List<String> _availableHabits = const [
+  double _age = 25; // Default age set to 25
+  String _country = 'United States';
+  List<String> _countries = [];
+  List<String> selectedHabits = [];
+  List<String> availableHabits = [
+    'Wake Up Early',
+    'Workout',
     'Drink Water',
-    'Read',
-    'Exercise',
     'Meditate',
-    'Sleep Early',
-    'Walk',
+    'Read a Book',
+    'Practice Gratitude',
+    'Sleep 8 Hours',
+    'Eat Healthy',
     'Journal',
+    'Walk 10,000 Steps'
   ];
+  final Map<String, Color> _habitColors = {
+    'Amber': Colors.amber,
+    'Red Accent': Colors.redAccent,
+    'Light Blue': Colors.lightBlue,
+    'Light Green': Colors.lightGreen,
+    'Purple Accent': Colors.purpleAccent,
+    'Orange': Colors.orange,
+    'Teal': Colors.teal,
+    'Deep Purple': Colors.deepPurple,
+  };
 
   @override
   void initState() {
@@ -47,83 +56,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _nameController.dispose();
     _usernameController.dispose();
-    _ageController.dispose();
     super.dispose();
   }
 
   Future<void> _loadCountries() async {
-    final countries = await fetchCountries();
-
-    if (!mounted) return;
-    setState(() {
-      _countries = countries;
-      _selectedCountry = countries.isNotEmpty ? countries.first : null;
-    });
+    try {
+      List<String> countries = await fetchCountries();
+      setState(() {
+        _countries = countries;
+      });
+    } catch (e) {
+      // Handle error
+      _showToast('Error fetching countries');
+    }
   }
 
-  Color _generateHabitColor() {
-    final colors = <Color>[
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.purple,
-      Colors.pink,
-      Colors.teal,
-      Colors.indigo,
-    ];
-
-    return colors[_random.nextInt(colors.length)];
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
-  void _toggleHabitSelection(String habit) {
-    setState(() {
-      if (_selectedHabits.contains(habit)) {
-        _selectedHabits.remove(habit);
-        _habitColors.remove(habit);
-      } else {
-        _selectedHabits.add(habit);
-        _habitColors[habit] = _generateHabitColor().value;
-      }
-    });
-  }
+  void _register() async {
+    final name = _nameController.text;
+    final username = _usernameController.text;
 
-  Future<void> _register() async {
-    final name = _nameController.text.trim();
-    final username = _usernameController.text.trim();
-    final age = double.tryParse(_ageController.text.trim());
-
-    if (name.isEmpty ||
-        username.isEmpty ||
-        age == null ||
-        _selectedCountry == null ||
-        _selectedHabits.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Please complete all fields and select at least one habit',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+    if (username.isEmpty || name.isEmpty) {
+      _showToast('Please fill in all fields');
       return;
     }
 
-    final habits = _selectedHabits
-        .map(
-          (habit) => {
-            'name': habit,
-            'colorValue': _habitColors[habit] ?? Colors.blue.value,
-            'completed': false,
-          },
-        )
-        .toList();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final prefs = await SharedPreferences.getInstance();
+    // Assign random colors to selected habits.
+    Map<String, String> selectedHabitsMap = {};
+    final random = Random();
+    final colorKeys = _habitColors.keys.toList();
+    for (var habit in selectedHabits) {
+      var randomColor =
+          _habitColors[colorKeys[random.nextInt(colorKeys.length)]]!;
+      selectedHabitsMap[habit] = randomColor.value.toRadixString(16);
+    }
+
+    // Save user information and habits to shared preferences.
     await prefs.setString('name', name);
     await prefs.setString('username', username);
-    await prefs.setDouble('age', age);
-    await prefs.setString('country', _selectedCountry!);
-    await prefs.setString('habit.habits', jsonEncode(habits));
+    await prefs.setDouble('age', _age);
+    await prefs.setString('country', _country);
+    await prefs.setString('selectedHabitsMap', jsonEncode(selectedHabitsMap));
+    // await prefs.setStringList('selectedHabits', selectedHabits);
 
     if (!mounted) return;
     Navigator.pushReplacement(
@@ -134,9 +120,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  void _toggleHabitSelection(String habit) {
+    setState(() {
+      if (selectedHabits.contains(habit)) {
+        selectedHabits.remove(habit);
+      } else {
+        selectedHabits.add(habit);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade700,
+        title: const Text(
+          'Register',
+          style: TextStyle(
+            fontSize: 32,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -145,102 +161,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Create Account',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  _RegisterTextField(
-                    controller: _nameController,
-                    hintText: 'Enter Name',
-                    icon: Icons.person,
-                  ),
-                  const SizedBox(height: 16),
-                  _RegisterTextField(
-                    controller: _usernameController,
-                    hintText: 'Enter Username',
-                    icon: Icons.account_circle,
-                  ),
-                  const SizedBox(height: 16),
-                  _RegisterTextField(
-                    controller: _ageController,
-                    hintText: 'Enter Age',
-                    icon: Icons.cake,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 18),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: _selectedCountry,
-                        hint: const Text('Select Country'),
-                        items: _countries
-                            .map(
-                              (country) => DropdownMenuItem(
-                                value: country,
-                                child: Text(country),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (country) {
-                          if (country != null) {
-                            setState(() => _selectedCountry = country);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Select Habits',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ..._availableHabits.map(
-                    (habit) {
-                      final selected = _selectedHabits.contains(habit);
-                      final colorValue = _habitColors[habit] ?? Colors.white.value;
-
-                      return Card(
-                        child: CheckboxListTile(
-                          value: selected,
-                          onChanged: (_) => _toggleHabitSelection(habit),
-                          title: Text(habit),
-                          secondary: CircleAvatar(
-                            backgroundColor: selected
-                                ? Color(colorValue)
-                                : Colors.grey.shade300,
+        child: Center(
+          child: SingleChildScrollView(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInputField(_nameController, 'Name', Icons.person),
+                const SizedBox(height: 10),
+                _buildInputField(
+                    _usernameController, 'Username', Icons.alternate_email),
+                const SizedBox(height: 10),
+                Text('Age: ${_age.round()}',
+                    style: const TextStyle(color: Colors.white, fontSize: 18)),
+                Slider(
+                  value: _age,
+                  min: 21,
+                  max: 100,
+                  divisions: 79,
+                  activeColor: Colors.blue.shade600,
+                  inactiveColor: Colors.blue.shade300,
+                  onChanged: (double value) {
+                    setState(() {
+                      _age = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+                _buildCountryDropdown(),
+                const SizedBox(height: 10),
+                const Text('Select Your Habits',
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: availableHabits.map((habit) {
+                    final isSelected = selectedHabits.contains(habit);
+                    return GestureDetector(
+                      onTap: () => _toggleHabitSelection(habit),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        decoration: BoxDecoration(
+                          color:
+                              isSelected ? Colors.blue.shade600 : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.blue.shade700),
+                        ),
+                        child: Text(
+                          habit,
+                          style: TextStyle(
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.blue.shade700,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue.shade600,
@@ -248,9 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 80,
-                        vertical: 15,
-                      ),
+                          horizontal: 80, vertical: 15),
                     ),
                     child: const Text(
                       'Register',
@@ -261,46 +242,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Already have an account? Log in',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
-}
 
-class _RegisterTextField extends StatelessWidget {
-  const _RegisterTextField({
-    required this.controller,
-    required this.hintText,
-    required this.icon,
-    this.keyboardType,
-  });
-
-  final TextEditingController controller;
-  final String hintText;
-  final IconData icon;
-  final TextInputType? keyboardType;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildInputField(
+      TextEditingController controller, String hint, IconData icon) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -308,16 +260,40 @@ class _RegisterTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
-        keyboardType: keyboardType,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.blue.shade700),
-          hintText: hintText,
+          hintText: hint,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCountryDropdown() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: DropdownButton<String>(
+        value: _country,
+        icon: Icon(Icons.arrow_drop_down, color: Colors.blue.shade700),
+        isExpanded: true,
+        underline: const SizedBox(),
+        items: _countries.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (newValue) {
+          setState(() {
+            _country = newValue!;
+          });
+        },
       ),
     );
   }
