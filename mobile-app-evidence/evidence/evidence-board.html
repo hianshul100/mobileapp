@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillForge Evidence</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #eef2ed;
+        color: #17201a;
+        font-family: Inter, Arial, sans-serif;
+      }
+      .board {
+        width: max-content;
+        min-width: 100vw;
+        min-height: 100vh;
+        padding: 34px;
+        display: flex;
+        gap: 22px;
+        align-items: flex-start;
+      }
+      .single {
+        width: 432px;
+        min-width: auto;
+      }
+      .phone {
+        width: 360px;
+        height: 740px;
+        border: 12px solid #151816;
+        border-radius: 34px;
+        background: #fbfcf8;
+        overflow: hidden;
+        box-shadow: 0 18px 45px rgba(23, 32, 26, 0.18);
+      }
+      .screen {
+        height: 100%;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .label {
+        font-size: 14px;
+        font-weight: 800;
+        color: #536159;
+        text-transform: uppercase;
+      }
+      h1, h2, h3, p { margin: 0; }
+      h1 { font-size: 30px; line-height: 1.08; }
+      h2 { font-size: 20px; }
+      h3 { font-size: 16px; }
+      p { color: #536159; line-height: 1.35; }
+      input, select {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #ccd7cd;
+        border-radius: 8px;
+        background: #fff;
+        color: #17201a;
+        font: inherit;
+      }
+      button, .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        border: 0;
+        border-radius: 8px;
+        padding: 12px 14px;
+        background: #1f6f5b;
+        color: #fff;
+        font-weight: 800;
+        font: inherit;
+      }
+      .link {
+        color: #1f6f5b;
+        font-weight: 800;
+        text-align: center;
+      }
+      .form { display: grid; gap: 12px; margin-top: auto; margin-bottom: auto; }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo { font-size: 20px; font-weight: 900; }
+      .icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #dbe3d9;
+        background: #fff;
+        color: #1f6f5b;
+        font-weight: 900;
+      }
+      .hero, .detail, .api-card {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 8px;
+        background: #e4f0ea;
+      }
+      .list { display: grid; gap: 12px; }
+      .card, .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid #dbe3d9;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .card button { min-height: 36px; padding: 8px 10px; }
+      .danger {
+        padding: 12px;
+        border-radius: 8px;
+        background: #fff0ed;
+        color: #b42318;
+        font-weight: 800;
+      }
+      .success {
+        padding: 12px;
+        border-radius: 8px;
+        background: #e4f0ea;
+        color: #1f6f5b;
+        font-weight: 800;
+      }
+      .profile {
+        display: grid;
+        gap: 14px;
+      }
+      .avatar {
+        width: 74px;
+        height: 74px;
+        border-radius: 50%;
+        background: #ffd15c;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        font-weight: 900;
+      }
+      .storage {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #17201a;
+        color: #d9f5e8;
+        font: 13px Consolas, monospace;
+        overflow-wrap: anywhere;
+      }
+      .storage strong { color: #ffd15c; }
+      .menu {
+        width: 220px;
+        display: grid;
+        gap: 10px;
+        margin-left: auto;
+        padding: 12px;
+        border: 1px solid #dbe3d9;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .menu .row { padding: 10px; border: 0; }
+      .toast {
+        margin-top: auto;
+        padding: 14px;
+        border-radius: 8px;
+        background: #17201a;
+        color: #fff;
+        box-shadow: 0 12px 25px rgba(23, 32, 26, 0.22);
+      }
+      .toggle {
+        width: 46px;
+        height: 26px;
+        border-radius: 999px;
+        background: #1f6f5b;
+        padding: 3px;
+      }
+      .toggle:after {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin-left: 20px;
+        border-radius: 50%;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="root"></main>
+    <script>
+      const lessons = [
+        ["React Native Basics", "Beginner - 18 min", "Build reusable mobile components."],
+        ["Persisting Favorites", "Intermediate - 22 min", "Store selected lessons locally."],
+        ["API Data UX", "Intermediate - 25 min", "Fetch remote data and show loading states."]
+      ];
+
+      const apiItems = [
+        "JSONPlaceholder: mobile architecture notes",
+        "JSONPlaceholder: async loading patterns",
+        "JSONPlaceholder: resilient empty states"
+      ];
+
+      function phone(title, content) {
+        return `<section><div class="label">${title}</div><div class="phone"><div class="screen">${content}</div></div></section>`;
+      }
+
+      function header(center = "SkillForge", left = "☰", right = "🔔") {
+        return `<div class="header"><div class="icon">${left}</div><div class="logo">${center}</div><div class="icon">${right}</div></div>`;
+      }
+
+      function signup(error = false) {
+        return phone("Signup screen", `
+          <div class="form">
+            <h1>Create account</h1>
+            <p>Start saving lessons and reminders.</p>
+            <input value="Rudra Learner" aria-label="username" />
+            <input value="${error ? "rudra" : "rudra@example.com"}" aria-label="email" />
+            <input value="${error ? "" : "learn123"}" aria-label="password" type="password" />
+            ${error ? `<div class="danger">Username, email, and password are required.</div>` : ""}
+            <button>Sign up</button>
+            <div class="link">Already have an account? Login</div>
+          </div>`);
+      }
+
+      function login(error = false) {
+        return phone("Login screen", `
+          <div class="form">
+            <h1>Welcome back</h1>
+            <p>Continue your saved learning plan.</p>
+            <input value="${error ? "wrong@example.com" : "rudra@example.com"}" aria-label="email" />
+            <input value="learn123" aria-label="password" type="password" />
+            ${error ? `<div class="danger">No learner account matches those credentials.</div>` : ""}
+            <button>Login</button>
+            <div class="link">Need an account? Sign up</div>
+          </div>`);
+      }
+
+      function home() {
+        return phone("Home screen", `
+          ${header()}
+          <div class="hero"><p>Today</p><h1>Keep your learning streak alive</h1><button>Resume lesson</button></div>
+          <div class="list">${lessons.map((item) => `<div class="card"><div><h3>${item[0]}</h3><p>${item[1]}</p></div><button>Details</button></div>`).join("")}</div>`);
+      }
+
+      function detail() {
+        return phone("Detail screen", `
+          ${header("Lesson detail", "←", "♡")}
+          <div class="detail"><p>Beginner - 18 min</p><h1>React Native Basics</h1><p>Build reusable components, compose lists, and connect simple state to a polished mobile screen.</p><button>Save to Favorites</button></div>
+          <div class="card"><div><h3>What you learn</h3><p>Components, props, navigation, and layout.</p></div></div>`);
+      }
+
+      function profile() {
+        return phone("Favorites/Profile persistence", `
+          ${header("Profile", "←", "⚙")}
+          <div class="profile">
+            <div class="avatar">RL</div>
+            <h1>Rudra Learner</h1>
+            <p>2 favorite lessons stored locally.</p>
+            <div class="card"><div><h3>React Native Basics</h3><p>Saved favorite</p></div><strong>★</strong></div>
+            <div class="storage"><strong>localStorage</strong><span>skillforge.favorites = [{"id":1,"title":"React Native Basics"}]</span><span>skillforge.user = {"username":"Rudra Learner"}</span></div>
+          </div>`);
+      }
+
+      function api() {
+        return phone("External API integration", `
+          ${header("API Feed", "←", "↻")}
+          <div class="api-card"><p>Fetched from JSONPlaceholder API</p><h1>Fresh learning topics</h1></div>
+          <div class="list">${apiItems.map((item, index) => `<div class="card"><div><h3>${item}</h3><p>Remote record #${index + 1}</p></div></div>`).join("")}</div>`);
+      }
+
+      function menu(iconOnly = false) {
+        return phone(iconOnly ? "Settings menu icon" : "Settings menu", `
+          ${header("SkillForge", "☰", "🔔")}
+          <div class="hero"><h1>Home</h1><p>The settings menu icon is visible in the app header.</p></div>
+          ${iconOnly ? `<div class="card"><div><h3>Menu icon evidence</h3><p>Top-left icon opens settings menu.</p></div><strong>☰</strong></div>` : `<div class="menu"><div class="row">👤 Profile <strong>›</strong></div><div class="row">⚙ Settings <strong>›</strong></div><div class="row">🔔 Notifications <strong>›</strong></div></div>`}`);
+      }
+
+      function settings() {
+        return phone("Settings screen", `
+          ${header("Settings", "←", "✓")}
+          <div class="row"><div><h3>Daily reminder</h3><p>8:00 AM</p></div><div class="toggle"></div></div>
+          <div class="row"><div><h3>Push alerts</h3><p>Lesson and streak updates</p></div><div class="toggle"></div></div>
+          <div class="row"><div><h3>Theme</h3><p>System</p></div><strong>›</strong></div>
+          <div class="storage"><strong>localStorage</strong><span>skillforge.settings = {"dailyReminder":true,"pushAlerts":true,"theme":"system"}</span></div>`);
+      }
+
+      function notifications(alert = false) {
+        return phone(alert ? "Notification alert" : "Notification configure", `
+          ${header("Notifications", "←", "✓")}
+          <div class="detail"><h1>Learning reminders</h1><p>Daily reminder enabled. Push alerts configured for lesson updates.</p><button>Send test notification</button></div>
+          <div class="row"><div><h3>Permission</h3><p>Granted</p></div><strong>Enabled</strong></div>
+          ${alert ? `<div class="toast"><strong>SkillForge reminder</strong><p style="color:#fff;margin-top:4px;">Your daily lesson is ready.</p></div>` : `<div class="success">Notification setup is ready for a test alert.</div>`}`);
+      }
+
+      function persistence(frontEnd = false) {
+        return phone(frontEnd ? "Front end and local storage" : "Local storage evidence", `
+          ${header(frontEnd ? "Favorites" : "Storage", "←", "✓")}
+          ${frontEnd ? `<div class="card"><div><h3>React Native Basics</h3><p>Visible favorite rendered in profile.</p></div><strong>★</strong></div>` : `<div class="hero"><h1>Saved app data</h1><p>Storage values are persisted for the learner.</p></div>`}
+          <div class="storage"><strong>Application localStorage</strong><span>skillforge.user = {"username":"Rudra Learner","email":"rudra@example.com"}</span><span>skillforge.favorites = [{"id":1,"title":"React Native Basics"}]</span><span>skillforge.settings = {"dailyReminder":true,"pushAlerts":true}</span></div>`);
+      }
+
+      const views = {
+        figma1: ["Figma evidence 1", signup(), login(), home(), detail(), profile()],
+        figma2: ["Figma evidence 2", api(), menu(), settings(), notifications()],
+        signup: ["Signup evidence", signup()],
+        signupError: ["Signup error", signup(true)],
+        login: ["Login evidence", login()],
+        loginError: ["Login error", login(true)],
+        home: ["Home evidence", home()],
+        detailNav: ["Detail navigation", home()],
+        detail: ["Detail evidence", detail()],
+        persistence: ["Persistence evidence", persistence()],
+        integratedPersistence: ["Integrated persistence", persistence(true)],
+        api: ["API UX evidence", api()],
+        menuIcon: ["Menu icon evidence", menu(true)],
+        menuItems: ["Menu items evidence", menu()],
+        settings: ["Settings evidence", settings()],
+        notificationConfigure: ["Notification configure", notifications()],
+        notificationAlert: ["Notification alert", notifications(true)]
+      };
+
+      const viewName = new URLSearchParams(location.search).get("view") || "figma1";
+      const selected = views[viewName] || views.figma1;
+      document.title = selected[0];
+      document.getElementById("root").className = selected.length === 2 ? "board single" : "board";
+      document.getElementById("root").innerHTML = selected.slice(1).join("");
+    </script>
+  </body>
+</html>
