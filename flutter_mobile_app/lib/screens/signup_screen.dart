@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/local_storage_service.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
+import '../theme/skillforge_theme.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -56,24 +57,35 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create account')),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(24, 96, 24, 24),
         children: [
+          Text(
+            'Create account',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Start saving lessons and reminders.',
+            style: TextStyle(color: skillMuted),
+          ),
+          const SizedBox(height: 28),
           TextField(
             controller: _usernameController,
-            decoration: const InputDecoration(labelText: 'Username'),
+            decoration: skillInputDecoration('Username'),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: skillInputDecoration('Email'),
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _passwordController,
-            decoration: const InputDecoration(labelText: 'Password'),
+            decoration: skillInputDecoration('Password'),
             obscureText: true,
           ),
           if (_error != null) ...[
@@ -81,7 +93,11 @@ class _SignupScreenState extends State<SignupScreen> {
             Text(_error!, style: const TextStyle(color: Colors.red)),
           ],
           const SizedBox(height: 20),
-          FilledButton(onPressed: _signup, child: const Text('Sign up')),
+          FilledButton(
+            style: skillButtonStyle(),
+            onPressed: _signup,
+            child: const Text('Sign up'),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -89,7 +105,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 MaterialPageRoute(builder: (_) => const LoginScreen()),
               );
             },
-            child: const Text('Already have an account? Login'),
+            child: const Text(
+              'Already have an account? Login',
+              style: TextStyle(color: skillGreen, fontWeight: FontWeight.w700),
+            ),
           ),
         ],
       ),

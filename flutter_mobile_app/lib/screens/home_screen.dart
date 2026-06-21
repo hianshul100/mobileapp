@@ -6,6 +6,7 @@ import 'detail_screen.dart';
 import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'settings_menu_screen.dart';
+import '../theme/skillforge_theme.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
+          color: skillGreen,
           onPressed: () {
             Navigator.push(
               context,
@@ -31,10 +33,14 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-        title: const Text('SkillForge'),
+        title: const Text(
+          'SkillForge',
+          style: TextStyle(fontWeight: FontWeight.w900),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.api),
+            color: skillGreen,
             onPressed: () {
               Navigator.push(
                 context,
@@ -44,6 +50,7 @@ class HomeScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.person),
+            color: skillGreen,
             onPressed: () {
               Navigator.push(
                 context,
@@ -54,6 +61,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             tooltip: 'Logout',
             icon: const Icon(Icons.logout),
+            color: skillGreen,
             onPressed: () => _logout(context),
           ),
         ],
@@ -61,9 +69,26 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          Text(
-            'Keep your learning streak alive',
-            style: Theme.of(context).textTheme.headlineSmall,
+          SkillPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Today', style: TextStyle(color: skillMuted)),
+                const SizedBox(height: 8),
+                Text(
+                  'Keep your learning streak alive',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+                const SizedBox(height: 14),
+                FilledButton(
+                  style: skillButtonStyle(),
+                  onPressed: () {},
+                  child: const Text('Resume lesson'),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
           Align(
@@ -76,19 +101,34 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ...lessons.map(
-            (lesson) => Card(
-              child: ListTile(
-                title: Text(lesson.title),
-                subtitle: Text('${lesson.level} - ${lesson.minutes} min'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
+            (lesson) => SkillCard(
+              onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => DetailScreen(lesson: lesson),
                     ),
                   );
-                },
+              },
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lesson.title,
+                          style: const TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                        Text(
+                          '${lesson.level} - ${lesson.minutes} min',
+                          style: const TextStyle(color: skillMuted),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: skillGreen),
+                ],
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/local_storage_service.dart';
 import 'home_screen.dart';
 import 'signup_screen.dart';
+import '../theme/skillforge_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,19 +45,30 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('SkillForge Login')),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(24, 140, 24, 24),
         children: [
+          Text(
+            'Welcome back',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Continue your saved learning plan.',
+            style: TextStyle(color: skillMuted),
+          ),
+          const SizedBox(height: 28),
           TextField(
             controller: _emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: skillInputDecoration('Email'),
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _passwordController,
-            decoration: const InputDecoration(labelText: 'Password'),
+            decoration: skillInputDecoration('Password'),
             obscureText: true,
           ),
           if (_error != null) ...[
@@ -64,7 +76,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Text(_error!, style: const TextStyle(color: Colors.red)),
           ],
           const SizedBox(height: 20),
-          FilledButton(onPressed: _login, child: const Text('Login')),
+          FilledButton(
+            style: skillButtonStyle(),
+            onPressed: _login,
+            child: const Text('Login'),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -72,7 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 MaterialPageRoute(builder: (_) => const SignupScreen()),
               );
             },
-            child: const Text('Need an account? Sign up'),
+            child: const Text(
+              'Need an account? Sign up',
+              style: TextStyle(color: skillGreen, fontWeight: FontWeight.w700),
+            ),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/api_service.dart';
+import '../theme/skillforge_theme.dart';
 
 class ApiScreen extends StatelessWidget {
   const ApiScreen({super.key});
@@ -23,16 +24,36 @@ class ApiScreen extends StatelessWidget {
           final topics = snapshot.data ?? const [];
           return ListView(
             padding: const EdgeInsets.all(20),
-            children: topics
-                .map(
-                  (topic) => Card(
-                    child: ListTile(
-                      title: Text(topic.title),
-                      subtitle: Text(topic.summary),
+            children: [
+              SkillPanel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Fetched from JSONPlaceholder API',
+                      style: TextStyle(color: skillMuted),
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Fresh learning topics',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ...topics.map(
+                (topic) => SkillCard(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(topic.title),
+                    subtitle: Text(topic.summary),
                   ),
-                )
-                .toList(),
+                ),
+              ),
+            ],
           );
         },
       ),

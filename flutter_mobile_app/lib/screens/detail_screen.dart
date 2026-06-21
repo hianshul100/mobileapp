@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/lesson.dart';
 import '../services/local_storage_service.dart';
+import '../theme/skillforge_theme.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key, required this.lesson});
@@ -22,21 +23,33 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Lesson detail')),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${lesson.level} - ${lesson.minutes} min'),
-            const SizedBox(height: 12),
-            Text(lesson.title, style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: 12),
-            Text(lesson.summary),
-            const SizedBox(height: 20),
-            FilledButton.icon(
-              onPressed: () => _saveFavorite(context),
-              icon: const Icon(Icons.favorite),
-              label: const Text('Save to Favorites'),
-            ),
-          ],
+        child: SkillPanel(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${lesson.level} - ${lesson.minutes} min',
+                style: const TextStyle(color: skillMuted),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                lesson.title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 12),
+              Text(lesson.summary),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                style: skillButtonStyle(),
+                onPressed: () => _saveFavorite(context),
+                icon: const Icon(Icons.favorite),
+                label: const Text('Save to Favorites'),
+              ),
+            ],
+          ),
         ),
       ),
     );

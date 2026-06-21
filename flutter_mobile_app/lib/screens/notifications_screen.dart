@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/skillforge_theme.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -22,20 +23,31 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       appBar: AppBar(title: const Text('Notifications')),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Learning reminders are enabled.'),
-            const SizedBox(height: 20),
-            FilledButton(
-              onPressed: _sendTestNotification,
-              child: const Text('Send test notification'),
-            ),
-            if (_message != null) ...[
+        child: SkillPanel(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Learning reminders',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              const Text('Daily reminder enabled. Push alerts configured.'),
               const SizedBox(height: 20),
-              Text(_message!, style: const TextStyle(color: Colors.green)),
+              FilledButton(
+                style: skillButtonStyle(),
+                onPressed: _sendTestNotification,
+                child: const Text('Send test notification'),
+              ),
+              if (_message != null) ...[
+                const SizedBox(height: 20),
+                Text(_message!, style: const TextStyle(color: skillGreen)),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
