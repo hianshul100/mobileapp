@@ -14,6 +14,8 @@ Caption: `Public GitHub repository for the SkillForge Flutter/Dart mobile applic
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/USER_STORIES.md`
 
+Dart/project file path: `flutter_mobile_app/USER_STORIES.md`
+
 Title: `SkillForge User Stories`
 
 Caption: `Markdown file containing all nine required user stories for the SkillForge Flutter app.`
@@ -29,6 +31,8 @@ Upload file: `flutter_mobile_app/evidence/figma-evidence2.png`
 ## 5. Signup Implementation
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/signup_screen.dart`
+
+Dart file path: `flutter_mobile_app/lib/screens/signup_screen.dart`
 
 Title: `Signup Screen Implementation`
 
@@ -46,6 +50,8 @@ Upload file: `flutter_mobile_app/evidence/signup_error.png`
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/login_screen.dart`
 
+Dart file path: `flutter_mobile_app/lib/screens/login_screen.dart`
+
 Title: `Login Screen Implementation`
 
 Caption: `Flutter/Dart login screen with email/password validation and navigation to the home screen.`
@@ -62,6 +68,8 @@ Upload file: `flutter_mobile_app/evidence/login_error.png`
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/home_screen.dart`
 
+Dart file path: `flutter_mobile_app/lib/screens/home_screen.dart`
+
 Title: `Home Screen Implementation`
 
 Caption: `Flutter/Dart home screen showing the SkillForge header, lesson list, menu navigation, profile access, API access, and logout.`
@@ -73,6 +81,8 @@ Upload file: `flutter_mobile_app/evidence/home-screen-evidence.png`
 ## 13. Detail Screen Implementation
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/detail_screen.dart`
+
+Dart file path: `flutter_mobile_app/lib/screens/detail_screen.dart`
 
 Title: `Detail Screen Implementation`
 
@@ -90,6 +100,8 @@ Upload file: `flutter_mobile_app/evidence/evidence-detail-screen.png`
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/services/local_storage_service.dart`
 
+Dart file path: `flutter_mobile_app/lib/services/local_storage_service.dart`
+
 Title: `Local Storage Implementation`
 
 Caption: `Flutter shared preferences service for persisted user data, favorites, and settings.`
@@ -106,6 +118,8 @@ Upload file: `flutter_mobile_app/evidence/evidence-integrateScreen-persistence.p
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/services/api_service.dart`
 
+Dart file path: `flutter_mobile_app/lib/services/api_service.dart`
+
 Title: `API Integration Implementation`
 
 Caption: `Flutter/Dart API service fetching remote learning topics from JSONPlaceholder.`
@@ -117,6 +131,8 @@ Upload file: `flutter_mobile_app/evidence/evidence-api-ux.png`
 ## 21. Settings Menu Implementation
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/settings_menu_screen.dart`
+
+Dart file path: `flutter_mobile_app/lib/screens/settings_menu_screen.dart`
 
 Title: `Settings Menu Implementation`
 
@@ -134,6 +150,8 @@ Upload file: `flutter_mobile_app/evidence/evidence-menu-items.png`
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/settings_screen.dart`
 
+Dart file path: `flutter_mobile_app/lib/screens/settings_screen.dart`
+
 Title: `Settings Screen Implementation`
 
 Caption: `Flutter/Dart settings screen with persisted reminder and push alert controls.`
@@ -146,6 +164,8 @@ Upload file: `flutter_mobile_app/evidence/evidence-settings-screen.png`
 
 URL: `https://github.com/hianshul100/mobileapp/blob/master/flutter_mobile_app/lib/screens/notifications_screen.dart`
 
+Dart file path: `flutter_mobile_app/lib/screens/notifications_screen.dart`
+
 Title: `Notifications Implementation`
 
 Caption: `Flutter/Dart notifications screen with test notification configuration and success message.`
@@ -157,4 +177,18 @@ Upload file: `flutter_mobile_app/evidence/evidence-notification-configure.png`
 ## 28. Notification Alert Evidence
 
 Upload file: `flutter_mobile_app/evidence/evidence-notification-alert.png`
+
+## Additional Flutter/Dart Project Files
+
+App entry point: `flutter_mobile_app/lib/main.dart`
+
+Favorites/Profile screen: `flutter_mobile_app/lib/screens/profile_screen.dart`
+
+External API UX screen: `flutter_mobile_app/lib/screens/api_screen.dart`
+
+Lesson model/data file: `flutter_mobile_app/lib/models/lesson.dart`
+
+Shared visual theme file: `flutter_mobile_app/lib/theme/skillforge_theme.dart`
+
+Flutter project manifest: `flutter_mobile_app/pubspec.yaml`
 
