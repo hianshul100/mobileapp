@@ -3,11 +3,20 @@ import 'package:flutter/material.dart';
 import '../models/lesson.dart';
 import 'api_screen.dart';
 import 'detail_screen.dart';
+import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'settings_menu_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  void _logout(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (_) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +51,11 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
+          IconButton(
+            tooltip: 'Logout',
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context),
+          ),
         ],
       ),
       body: ListView(
@@ -50,6 +64,15 @@ class HomeScreen extends StatelessWidget {
           Text(
             'Keep your learning streak alive',
             style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: OutlinedButton.icon(
+              onPressed: () => _logout(context),
+              icon: const Icon(Icons.logout),
+              label: const Text('Logout'),
+            ),
           ),
           const SizedBox(height: 16),
           ...lessons.map(
