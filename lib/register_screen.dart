@@ -14,7 +14,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _shortUserNameController = TextEditingController();
   final Set<String> _selectedHabits = <String>{};
-  String _selectedCountry = countryList.first;
+  List<String> _countries = const [];
+  String? _selectedCountry;
   String? _error;
 
   final List<String> _starterHabits = const [
@@ -26,10 +27,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadCountries();
+  }
+
+  @override
   void dispose() {
     _userNameController.dispose();
     _shortUserNameController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadCountries() async {
+    final countries = await fetchCountries();
+
+    if (!mounted) return;
+    setState(() {
+      _countries = countries;
+      _selectedCountry = countries.isNotEmpty ? countries.first : null;
+    });
   }
 
   Future<void> _register() async {
@@ -84,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           DropdownButtonFormField<String>(
             value: _selectedCountry,
             decoration: const InputDecoration(labelText: 'Country'),
-            items: countryList
+            items: _countries
                 .map(
                   (country) => DropdownMenuItem(
                     value: country,

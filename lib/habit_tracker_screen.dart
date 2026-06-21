@@ -4,7 +4,9 @@ import 'add_habit_screen.dart';
 import 'habit_storage.dart';
 
 class HabitTrackerScreen extends StatefulWidget {
-  const HabitTrackerScreen({super.key});
+  const HabitTrackerScreen({super.key, this.username});
+
+  final String? username;
 
   @override
   State<HabitTrackerScreen> createState() => _HabitTrackerScreenState();
@@ -60,7 +62,9 @@ class _HabitTrackerScreenState extends State<HabitTrackerScreen> {
     final incompleteHabits =
         _habits.where((habit) => !habit.completed).toList();
     final completedHabits = _habits.where((habit) => habit.completed).toList();
-    final displayName = _user['shortUserName']?.isNotEmpty == true
+    final displayName = widget.username?.isNotEmpty == true
+        ? widget.username!
+        : _user['shortUserName']?.isNotEmpty == true
         ? _user['shortUserName']!
         : 'Habit User';
 

@@ -1,11 +1,17 @@
-const List<String> countryList = [
-  'Australia',
-  'Brazil',
-  'Canada',
-  'France',
-  'Germany',
-  'India',
-  'Japan',
-  'United Kingdom',
-  'United States',
-];
+Future<List<String>> fetchCountries() async {
+  List<String> countries = [
+    'United States',
+    'Canada',
+    'United Kingdom',
+    'Australia',
+    'India',
+    'Germany',
+    'France',
+    'Japan',
+    'China',
+    'Brazil',
+    'South Africa'
+  ];
+
+  return countries;
+}
